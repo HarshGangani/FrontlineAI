@@ -548,7 +548,7 @@ function ResultField({ label, children }: { label: string; children: React.React
   return (
     <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/60">
       <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</div>
-      <p className="mt-1 text-sm text-slate-700 dark:text-slate-200">{children}</p>
+      <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm text-slate-700 dark:text-slate-200">{children}</p>
     </div>
   );
 }
@@ -765,9 +765,12 @@ function EvaluationResults({
                         <tr className="bg-slate-50/70 dark:bg-slate-950/40">
                           <td></td>
                           <td colSpan={7} className="px-4 pb-4 pt-1">
-                            <div className="grid gap-3 sm:grid-cols-2">
-                              <ResultField label="Summary">{row.result.summary}</ResultField>
-                              <ResultField label="Suggested Action">{row.result.suggested_action}</ResultField>
+                            <div className="flex flex-col gap-3">
+                              <ResultField label="Full Message">{row.message}</ResultField>
+                              <div className="grid gap-3 sm:grid-cols-2">
+                                <ResultField label="Summary">{row.result.summary}</ResultField>
+                                <ResultField label="Suggested Action">{row.result.suggested_action}</ResultField>
+                              </div>
                             </div>
                           </td>
                         </tr>
