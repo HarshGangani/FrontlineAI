@@ -27,10 +27,56 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Frontline AI
 
-## Deploy on Vercel
+AI-powered customer support triage. Paste a customer message (or upload a dataset) and it returns the **category**, **priority**, a **summary**, a **suggested action**, whether it **needs a human**, and a **confidence** score.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Built with Next.js, Google Gemini 2.5 Flash, and Zod.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Setup
+
+```bash
+npm install
+echo "GEMINI_API_KEY=your_key_here" > .env.local
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Usage
+
+- **Single Message** — paste one message and click Analyze.
+- **Dataset Upload** — upload a `.json` or `.csv` file with a `message` field/column.
+- **Run Evaluation Suite** — scores the built-in test set in `data/evaluation.json`.
+
+## API
+
+`POST /api/triage`
+
+```json
+// request
+{ "message": "I was charged twice this month" }
+
+// response
+{
+  "category": "billing",
+  "priority": "P1",
+  "summary": "...",
+  "suggested_action": "...",
+  "needs_human": true,
+  "confidence": 0.92
+}
+```
+
+Categories: `billing`, `technical`, `shipping`, `refund`, `account`, `complaint`, `feature_request`, `other`
+Priorities: `P0` (critical) → `P3` (low)
+
+## Project Structure
+app/page.tsx          UI
+app/api/triage/       Triage endpoint
+lib/prompts.ts        System prompt
+lib/gemini.ts         Gemini client
+lib/schema.ts         Zod output schema
+data/evaluation.json  Test cases
+scripts/evaluate.ts   Evaluation runner
+
